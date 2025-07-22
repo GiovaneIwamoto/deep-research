@@ -1,0 +1,31 @@
+"""
+Synthesis and final report generation services for the Deep Research Agent project.
+"""
+
+import logging
+from models.base import ReportState
+from templates.build_final_response import build_final_response
+from langchain_openai import ChatOpenAI
+from typing import Dict, Any
+
+
+def final_writer(state: ReportState) -> Dict[str, Any]:
+    """
+    Aggregate all search results and synthesize a final report using an LLM.
+    """
+    search_results = ""
+    reference = ""
+    for i, result in enumerate(state.queries_results):
+        search_results += f"[{i+1}]\n\n"
+        search_results += f"Title: {result.title}\n"
+        search_results += f"URL: {result.url}\n"
+        search_results += f"Content: {result.resume}\n\n"
+        reference += f"[{i+1}] - {result.title} ({result.url})\n"
+    prompt = build_final_response.format(user_input=state.user_input, search_results=search_results)
+    logging.info("Compiled search results for final synthesis:")
+    logging.info(search_results)
+    logging.info("End of search results compilation.\n")
+    default_llm_openai = ChatOpenAI(model="gpt-4.1-mini-2025-04-14")
+    llm_result = default_llm_openai.invoke(prompt)
+    final_response = llm_result + "\n\nReferences:\n" + reference
+    return {"final_response": final_response}
