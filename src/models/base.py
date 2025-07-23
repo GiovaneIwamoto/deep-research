@@ -10,7 +10,7 @@ import operator
 
 class QueryResult(BaseModel):
     """
-    Represents the result of a single web search query, including title, URL, and a summary/resume.
+    Represents the result of a single web search query, including title, url, and a resume.
     """
     title: str = None
     url: str = None
@@ -19,6 +19,7 @@ class QueryResult(BaseModel):
 class ReportState(BaseModel):
     """
     Maintains the state of the research workflow, including user input, queries, results, and reflection settings.
+    Annotated at queries_results with operator.add to allow for concatenation of lists.
     """
     user_input: str = None
     final_response: str = None

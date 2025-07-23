@@ -7,8 +7,11 @@ def get_user_input() -> tuple[str, bool, int]:
     Prompts the user for the research topic, whether to enable reflection, and the number of loops.
     Returns a tuple: (user_input, use_reflection, reflection_loops)
     """
+    # Ask for the research topic and whether to enable reflection
     user_input = input("Enter the research topic or question: ").strip()
     reflection_choice = input("Enable reflection? (y/n): ").strip().lower()
+    
+    # If the user wants to enable reflection ask for the number of loops
     if reflection_choice in ["y", "yes", "true"]:
         use_reflection = True
         while True:
@@ -23,4 +26,5 @@ def get_user_input() -> tuple[str, bool, int]:
     else:
         use_reflection = False
         reflection_loops = 1
+    
     return user_input, use_reflection, reflection_loops 

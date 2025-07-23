@@ -22,7 +22,7 @@ def main():
         "use_reflection": use_reflection,
         "reflection_loops": reflection_loops
     })
-    print("\n--- FINAL REPORT ---\n")
+    print("\n\nFINAL REPORT\n\n")
     print(response['final_response'].messages[0].content)
 
 

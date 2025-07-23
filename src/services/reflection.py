@@ -13,30 +13,43 @@ import json
 
 def reflect_on_summary(state: ReportState) -> Dict[str, Any]:
     """
-    Use an LLM to reflect on the current summary, identify knowledge gaps, and generate follow-up queries.
+    Use an reasoning model to reflect on the current summary, identify knowledge gaps, and generate follow-up queries.
     """
     new_loop_count = state.research_loop_count + 1
+    
+    # Define the reasoning model
     reasoning_llm_openai = ChatOpenAI(
         model="o4-mini-2025-04-16",
         reasoning_effort="medium",
     )
+
+    # Invoke the reasoning model
     result = reasoning_llm_openai.invoke([
         SystemMessage(content=reflection_instructions.format(research_topic=state.user_input)),
         HumanMessage(content=f"Reflect on our existing knowledge: \n === \n {state.queries_results}, \n === \n And now identify knowledge gaps and generate 1-2 follow-up web search queries:")
     ])
+
+    # Parse the result
     try:
         reflection_content = json.loads(result.content)
+        
         logging.info("Reflection analysis:")
         logging.info(f"Knowledge gaps: {reflection_content.get('knowledge_gaps', [])}")
         logging.info(f"Follow-up queries: {reflection_content.get('follow_up_queries', [])}")
         logging.info("End of reflection analysis.\n")
+        
         queries = reflection_content.get('follow_up_queries', [])
+        
         if not queries:
             queries = [f"Tell me more about {state.user_input}"]
+        
+        # Return the new loop count and the follow-up queries
         return {
             "search_queries": queries,
             "research_loop_count": new_loop_count
         }
+
+    # If the result is not valid return a fallback query
     except (json.JSONDecodeError, KeyError, AttributeError):
         fallback_query = f"Tell me more about {state.user_input}"
         return {
