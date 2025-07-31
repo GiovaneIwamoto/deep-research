@@ -16,16 +16,19 @@ def build_first_queries(state: ReportState) -> Dict[str, Any]:
     class QueryList(QueryResult.__base__):
         queries: List[str]
 
-    user_input = state.user_input
-    prompt = build_queries.format(user_input=user_input)
-    # The LLM should be injected or imported from a config/service layer
+    # Fill prompt placeholders with state data
+    prompt = build_queries.format(user_input=state.user_input, current_date=state.current_date, num_queries=state.num_queries)
+
+    # The LLM should be injected or imported from a config/service layer #FIXME:
     from langchain_openai import ChatOpenAI
     default_llm_openai = ChatOpenAI(model="gpt-4.1-mini-2025-04-14")
     query_llm = default_llm_openai.with_structured_output(QueryList)
     result = query_llm.invoke(prompt)
+
     logging.info("Generated search queries:")
     logging.info(result)
     logging.info("End of query generation.")
+    
     return {"search_queries": result.queries}
 
 

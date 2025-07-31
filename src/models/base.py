@@ -28,3 +28,5 @@ class ReportState(BaseModel):
     research_loop_count: int = 0
     use_reflection: bool = True
     reflection_loops: int = 1 
+    current_date: str = None
+    num_queries: int = 2
