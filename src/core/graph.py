@@ -10,9 +10,12 @@ from services.search import single_search
 from services.reflection import reflect_on_summary
 from langgraph.graph import START, END, StateGraph
 
-def build_graph():
+def build_graph() -> StateGraph[ReportState]:
     """
-    Builds and returns the workflow graph, parameterized by the user input.
+    Builds and returns the LangGraph workflow used by the Deep Research Agent.
+
+    This graph defines the nodes and conditional transitions that control the
+    flow of reasoning, searching, reflecting, and final answer generation.
     """
     builder = StateGraph(ReportState)
     
