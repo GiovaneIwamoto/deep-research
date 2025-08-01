@@ -9,7 +9,7 @@
 # - notable_passages: Quotes or sentences from the page that are especially important, revealing, or impactful.
 # - covered_topics: A list of major topics, subtopics, or themes discussed on the page.
 
-# This prompt guides an LLM to act as a "Web Page Summarization Agent", producing structured summaries of web pages that can be used by downstream agents for further analysis or report generation.
+# This prompt guides an Agent to act as a "Web Page Summarization Agent", producing structured summaries of web pages that can be used by downstream agents for further analysis or report generation.
 
 summary_web_search_prompt = """
 You are a <ROLE>Web Page Summarization Agent</ROLE> in a multi-agent research system.

@@ -1,3 +1,22 @@
+# Prompt for building the final report.
+
+# Placeholders:
+# - {current_date}: The current date. Useful for time-sensitive or contextual reports.
+# - {research_brief}: The original research brief or question submitted by the user.
+# - {aggregated_summaries}: The aggregated summaries retrieved by the search agents.
+
+# Each summary at {aggregated_summaries} is formatted as follows:
+# - Title: {title}
+# - URL: {url}
+# - Content: {content}
+
+# Each {content} is a json object with the following fields:
+# - summary: A coherent and factual paragraph-based summary that captures the key information presented on the page.
+# - notable_passages: Quotes or sentences from the page that are especially important, revealing, or impactful.
+# - covered_topics: A list of major topics, subtopics, or themes discussed on the page.
+
+# This prompt guides an Agent to act as a "Final Report Composer Agent", generating a comprehensive, markdown-formatted, and user-friendly report that directly addresses a research brief.
+
 build_final_report_prompt = """
 You are a <ROLE>Final Report Composer Agent</ROLE> in a multi-agent research system.
 
