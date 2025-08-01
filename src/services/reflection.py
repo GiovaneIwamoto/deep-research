@@ -4,7 +4,7 @@ Reflection and follow-up query generation services for the Deep Research Agent p
 
 import logging
 from models.base import ReportState
-from templates.reflection_instructions import reflection_instructions
+from templates.knowledge_gap_reflection import knowledge_gap_reflection_prompt
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import SystemMessage, HumanMessage
 from typing import Dict, Any
@@ -25,8 +25,7 @@ def reflect_on_summary(state: ReportState) -> Dict[str, Any]:
 
     # Invoke the reasoning model
     result = reasoning_llm_openai.invoke([
-        SystemMessage(content=reflection_instructions.format(research_topic=state.user_input)),
-        HumanMessage(content=f"Reflect on our existing knowledge: \n === \n {state.queries_results}, \n === \n And now identify knowledge gaps and generate 1-2 follow-up web search queries:")
+        SystemMessage(content=knowledge_gap_reflection_prompt.format(research_brief=state.user_input, aggregated_summaries=state.queries_results))
     ])
 
     # Parse the result
