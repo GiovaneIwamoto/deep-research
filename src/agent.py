@@ -34,7 +34,7 @@ def main():
     })
     
     print("\n\nFINAL REPORT\n\n")
-    print(response['final_response'].messages[0].content)
+    print(response['final_report'].content)
 
 
 if __name__ == "__main__":

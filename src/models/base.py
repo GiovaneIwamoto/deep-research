@@ -22,7 +22,7 @@ class ReportState(BaseModel):
     Annotated at queries_results with operator.add to allow for concatenation of lists.
     """
     user_input: str = None
-    final_response: str = None
+    final_report: str = None
     search_queries: List[str] = []
     queries_results: Annotated[List[QueryResult], operator.add]
     research_loop_count: int = 0
