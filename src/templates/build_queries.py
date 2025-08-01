@@ -2,21 +2,19 @@
 # https://github.com/langchain-ai/open_deep_research/
 # Only select ideas were adapted — content was rewritten for this use case.
 
-"""
-Prompt for building search queries.
+# Prompt for building search queries.
 
-Placeholders:
-- {user_input}: The original question or message submitted by the user. This is the basis for generating the search queries.
-- {current_date}: The current date. Useful for time-sensitive or contextual queries.
-- {num_queries}: The exact number of search queries to generate. This value is important because it determines 
-  how many parallel retrieval agents will be spawned to execute the searches. Each query is assigned to its own agent 
-  in a distributed information retrieval system.
+# Placeholders:
+# - {user_input}: The original question or message submitted by the user. This is the basis for generating the search queries.
+# - {current_date}: The current date. Useful for time-sensitive or contextual queries.
+# - {num_queries}: The exact number of search queries to generate. This value is important because it determines 
+#   how many parallel retrieval agents will be spawned to execute the searches. Each query is assigned to its own agent 
+#   in a distributed information retrieval system.
 
-This prompt guides an LLM to act as a "Search Query Planner Agent", generating high-quality, diverse, and well-formed
-search engine queries that enable downstream agents to retrieve relevant information and construct a final report.
-"""
+# This prompt guides an LLM to act as a "Search Query Planner Agent", generating high-quality, diverse, and well-formed
+# search engine queries that enable downstream agents to retrieve relevant information and construct a final report.
 
-build_queries =  """
+build_queries_prompt =  """
 You are a <ROLE> Research Query Generator Agent </ROLE> working within a multi-agent information retrieval system.
 
 <CONTEXT>
