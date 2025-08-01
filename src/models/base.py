@@ -10,11 +10,11 @@ import operator
 
 class QueryResult(BaseModel):
     """
-    Represents the result of a single web search query, including title, url, and a resume.
+    Represents the result of a single web search query, including title, url, and a summary.
     """
     title: str = None
     url: str = None
-    resume: str = None
+    summary: str = None
 
 class ReportState(BaseModel):
     """

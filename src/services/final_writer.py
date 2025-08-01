@@ -21,7 +21,7 @@ def final_writer(state: ReportState) -> Dict[str, Any]:
         search_results += f"[{i+1}]\n\n"
         search_results += f"Title: {result.title}\n"
         search_results += f"URL: {result.url}\n"
-        search_results += f"Content: {result.resume}\n\n"
+        search_results += f"Content: {result.summary}\n\n"
         reference += f"[{i+1}] - {result.title} ({result.url})\n"
     
     prompt = build_final_response.format(user_input=state.user_input, search_results=search_results)
