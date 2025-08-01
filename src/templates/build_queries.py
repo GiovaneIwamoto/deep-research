@@ -26,7 +26,7 @@ Your mission is to transform the user's message into a set of optimized search e
 </USER_INPUT>
 
 <TODAY>
-Today's date is {current_date}.
+Today's date is: {current_date}.
 </TODAY>
 
 <GOAL>
