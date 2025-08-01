@@ -4,7 +4,7 @@ Query generation and agent spawning services for the Deep Research Agent project
 
 import logging
 from models.base import QueryResult, ReportState
-from templates.build_queries import build_queries
+from templates.build_queries import build_queries_prompt
 from typing import List, Dict, Any
 from langgraph.types import Send
 
@@ -17,7 +17,7 @@ def build_first_queries(state: ReportState) -> Dict[str, Any]:
         queries: List[str]
 
     # Fill prompt placeholders with state data
-    prompt = build_queries.format(user_input=state.user_input, current_date=state.current_date, num_queries=state.num_queries)
+    prompt = build_queries_prompt.format(user_input=state.user_input, current_date=state.current_date, num_queries=state.num_queries)
 
     # The LLM should be injected or imported from a config/service layer #FIXME:
     from langchain_openai import ChatOpenAI
@@ -37,8 +37,7 @@ def spawn_researchers(state: ReportState) -> List[Send]:
     Spawn parallel researcher agents for each search query.
     """
     logging.info("Spawning parallel researcher agents.")
-    return [Send("single_search", query) for query in state.search_queries]
-
+    return [Send("single_search", {"query": query, "current_date": state.current_date}) for query in state.search_queries]
 
 def route_after_single_search(state: ReportState) -> str:
     """
