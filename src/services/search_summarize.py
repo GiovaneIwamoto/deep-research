@@ -10,9 +10,10 @@ from langchain_openai import ChatOpenAI
 from typing import Dict, Any
 
 
-def single_search(data: Dict[str, Any]) -> Dict[str, Any]:
+def search_summarize(data: Dict[str, Any]) -> Dict[str, Any]:
     """
     Perform a web search for the given query, extract content, and summarize it using an LLM.
+    This function represents a single agent that handles both search and summarization tasks.
     """
     # Get the query and current date from the data
     query = data["query"]
@@ -44,14 +45,13 @@ def single_search(data: Dict[str, Any]) -> Dict[str, Any]:
             url=url,
             summary=llm_result.content
         )
-        logging.info(f"Query: {query}")
-        logging.info("Search result summary:")
-        logging.info(query_results)
+        logging.info(f"\nQuery: {query}\n\nSearch result summary:\n{query_results}\n")
+
     else:
         query_results = QueryResult(
             title=results["results"][0]["title"],
             url=url,
             summary="No content could be extracted from the provided URL."
         )
-        logging.warning(f"No content extracted for query: {query} (URL: {url})")
-    return {"queries_results": [query_results]}
+        logging.warning(f"\nNo content extracted for query: {query} (URL: {url})\n")
+    return {"queries_results": [query_results]} 

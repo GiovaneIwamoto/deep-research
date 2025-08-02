@@ -6,7 +6,7 @@ Responsible for collecting user input, building the workflow graph, and executin
 import dotenv
 from datetime import date
 from config.logging_config import setup_logging
-from interface.input import get_user_input
+from interface.user_input import get_user_input
 from core.graph import build_graph
 
 

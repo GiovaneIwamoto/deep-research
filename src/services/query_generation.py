@@ -1,12 +1,11 @@
 """
-Query generation and agent spawning services for the Deep Research Agent project.
+Query generation services for the Deep Research Agent project.
 """
 
 import logging
 from models.base import QueryResult, ReportState
 from templates.build_queries import build_queries_prompt
 from typing import List, Dict, Any
-from langgraph.types import Send
 
 
 def build_first_queries(state: ReportState) -> Dict[str, Any]:
@@ -25,25 +24,6 @@ def build_first_queries(state: ReportState) -> Dict[str, Any]:
     query_llm = default_llm_openai.with_structured_output(QueryList)
     result = query_llm.invoke(prompt)
 
-    logging.info("Generated search queries:")
-    logging.info(result)
-    logging.info("End of query generation.")
+    logging.info(f"\nGenerated search queries:\n{result.queries}\n\n")
     
-    return {"search_queries": result.queries}
-
-
-def spawn_researchers(state: ReportState) -> List[Send]:
-    """
-    Spawn parallel researcher agents for each search query.
-    """
-    logging.info("Spawning parallel researcher agents.")
-    return [Send("single_search", {"query": query, "current_date": state.current_date}) for query in state.search_queries]
-
-def route_after_single_search(state: ReportState) -> str:
-    """
-    Decide whether to continue with reflection or proceed to final writing.
-    """
-    if state.use_reflection and state.research_loop_count < state.reflection_loops:
-        return "reflect_on_summary"
-    else:
-        return "final_writer" 
+    return {"search_queries": result.queries} 

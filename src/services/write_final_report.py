@@ -9,7 +9,7 @@ from langchain_openai import ChatOpenAI
 from typing import Dict, Any
 
 
-def final_writer(state: ReportState) -> Dict[str, Any]:
+def write_final_report(state: ReportState) -> Dict[str, Any]:
     """
     Aggregate all search results and synthesize a final report using an LLM.
     """
@@ -33,4 +33,4 @@ def final_writer(state: ReportState) -> Dict[str, Any]:
     default_llm_openai = ChatOpenAI(model="gpt-4.1-mini-2025-04-14")
     final_report = default_llm_openai.invoke(prompt)
     
-    return {"final_report": final_report}
+    return {"final_report": final_report} 

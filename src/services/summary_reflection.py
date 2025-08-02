@@ -6,7 +6,7 @@ import logging
 from models.base import ReportState
 from templates.knowledge_gap_reflection import knowledge_gap_reflection_prompt
 from langchain_openai import ChatOpenAI
-from langchain_core.messages import SystemMessage, HumanMessage
+from langchain_core.messages import SystemMessage
 from typing import Dict, Any
 import json
 
@@ -32,10 +32,8 @@ def reflect_on_summary(state: ReportState) -> Dict[str, Any]:
     try:
         reflection_content = json.loads(result.content)
         
-        logging.info("Reflection analysis:")
-        logging.info(f"Knowledge gaps: {reflection_content.get('knowledge_gaps', [])}")
-        logging.info(f"Follow-up queries: {reflection_content.get('follow_up_queries', [])}")
-        logging.info("End of reflection analysis.\n")
+        logging.info(f"\nReflection analysis:\n\nKnowledge gaps: {reflection_content.get('knowledge_gaps', [])}")
+        logging.info(f"\nFollow-up queries: {reflection_content.get('follow_up_queries', [])}")
         
         queries = reflection_content.get('follow_up_queries', [])
         
@@ -54,4 +52,4 @@ def reflect_on_summary(state: ReportState) -> Dict[str, Any]:
         return {
             "search_queries": [fallback_query],
             "research_loop_count": new_loop_count
-        }
+        } 
