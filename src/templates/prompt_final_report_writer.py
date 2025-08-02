@@ -51,6 +51,9 @@ Your report must be written in the same language as the research brief. This is 
 - Write in a professional, concise, and informative tone.
 - Bullet points are allowed when listing specific facts or grouped data, but prefer paragraph form for explanations.
 - Each claim or section based on the summaries must include a citation in the format '[1]', '[2]', etc.
+- Source summaries may arrive already numbered (e.g., [1], [2], [3], ...), but some may include no usable content, such as: "[3] No content could be extracted from the provided URL." Ignore such sources completely - do not cite them or include them in the references. 
+- Renumber the remaining valid sources sequentially in the order they are used in the report to ensure continuity (e.g., [1], [2], [3], even if the original had [4] as the next valid source).
+
 </STYLE_AND_STRUCTURE>
 
 <BEHAVIORAL_CONSTRAINTS>
@@ -63,11 +66,15 @@ Your report must be written in the same language as the research brief. This is 
 </BEHAVIORAL_CONSTRAINTS>
 
 <OUTPUT_FORMAT>
-Return only the final report in Markdown format. At the end of the report, include a section titled '### References' with a list of all sources cited. Use the following format for each reference:
-[1] Source Title: URL
+Return only the final report in Markdown format. At the end of the report, include a section titled '### References' with a list of all sources cited.
+
+Use the following format for each reference:
+[1] Source Title: URL 
 [2] Source Title: URL
 ...
 
-The numbering of citations must be consistent and sequential with those used in the body of the report. Ensure every citation used is traceable to its corresponding source in the list.
+The reference list must include only sources that were cited in the body of the report and that contain valid, extractable content.  
+All in-text citations and references must follow a consistent, continuous numbering scheme without gaps.  
+Do not include any sources that had no content available.
 </OUTPUT_FORMAT>
-""" 
+"""
