@@ -1,10 +1,10 @@
 """
-Synthesis and final report generation services for the Deep Research Agent project.
+Final report writer services for the Deep Research Agent project.
 """
 
 import logging
 from models.base import ReportState
-from templates.build_final_report import build_final_report_prompt
+from templates.prompt_final_report_writer import final_report_writer_prompt 
 from langchain_openai import ChatOpenAI
 from typing import Dict, Any
 
@@ -24,7 +24,7 @@ def write_final_report(state: ReportState) -> Dict[str, Any]:
         search_results += f"Content: {result.summary}\n\n"
         reference += f"[{i+1}] - {result.title} ({result.url})\n"
     
-    prompt = build_final_report_prompt.format(current_date=state.current_date, 
+    prompt = final_report_writer_prompt.format(current_date=state.current_date, 
                                               research_brief=state.user_input, 
                                               aggregated_summaries=search_results)
     

@@ -1,5 +1,5 @@
 """
-Researcher spawning services for the Deep Research Agent project.
+Researcher spawner services for the Deep Research Agent project.
 """
 
 import logging
@@ -13,4 +13,4 @@ def spawn_researchers(state: ReportState) -> List[Send]:
     Spawn parallel researcher agents for each search query.
     """
     logging.info("Spawning parallel researcher agents.")
-    return [Send("search_summarize", {"query": query, "current_date": state.current_date}) for query in state.search_queries] 
+    return [Send("search_and_summarize", {"query": query, "current_date": state.current_date}) for query in state.search_queries] 

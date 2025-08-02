@@ -1,10 +1,10 @@
 """
-Reflection and follow-up query generation services for the Deep Research Agent project.
+Summary reflector services for the Deep Research Agent project.
 """
 
 import logging
 from models.base import ReportState
-from templates.knowledge_gap_reflection import knowledge_gap_reflection_prompt
+from templates.prompt_summary_reflector import summary_reflector_prompt
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import SystemMessage
 from typing import Dict, Any
@@ -25,7 +25,7 @@ def reflect_on_summary(state: ReportState) -> Dict[str, Any]:
 
     # Invoke the reasoning model
     result = reasoning_llm_openai.invoke([
-        SystemMessage(content=knowledge_gap_reflection_prompt.format(research_brief=state.user_input, aggregated_summaries=state.queries_results))
+        SystemMessage(content=summary_reflector_prompt.format(research_brief=state.user_input, aggregated_summaries=state.queries_results))
     ])
 
     # Parse the result

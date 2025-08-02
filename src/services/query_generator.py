@@ -1,14 +1,14 @@
 """
-Query generation services for the Deep Research Agent project.
+Query generator services for the Deep Research Agent project.
 """
 
 import logging
 from models.base import QueryResult, ReportState
-from templates.build_queries import build_queries_prompt
+from templates.prompt_query_generator import query_generator_prompt
 from typing import List, Dict, Any
 
 
-def build_first_queries(state: ReportState) -> Dict[str, Any]:
+def generate_queries(state: ReportState) -> Dict[str, Any]:
     """
     Generate a list of search queries based on the user's input using an LLM.
     """
@@ -16,7 +16,7 @@ def build_first_queries(state: ReportState) -> Dict[str, Any]:
         queries: List[str]
 
     # Fill prompt placeholders with state data
-    prompt = build_queries_prompt.format(user_input=state.user_input, current_date=state.current_date, num_queries=state.num_queries)
+    prompt = query_generator_prompt.format(user_input=state.user_input, current_date=state.current_date, num_queries=state.num_queries)
 
     # The LLM should be injected or imported from a config/service layer #FIXME:
     from langchain_openai import ChatOpenAI

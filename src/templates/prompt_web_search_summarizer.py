@@ -11,7 +11,7 @@
 
 # This prompt guides an Agent to act as a "Web Page Summarization Agent", producing structured summaries of web pages that can be used by downstream agents for further analysis or report generation.
 
-summary_web_search_prompt = """
+web_search_summarizer_prompt = """
 You are a <ROLE>Web Page Summarization Agent</ROLE> in a multi-agent research system.
 
 <CONTEXT>
@@ -74,4 +74,4 @@ Return a JSON object containing the following fields:
 </OUTPUT>
 
 Your output must be entirely based on the content provided. Do not invent, extrapolate, or include external knowledge. Be rigorous and neutral in tone.
-"""
+""" 

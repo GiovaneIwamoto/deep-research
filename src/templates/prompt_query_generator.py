@@ -11,7 +11,7 @@
 
 # This prompt guides an Agent to act as a "Search Query Planner Agent", generating high-quality, diverse, and well-formed search engine queries that enable downstream agents to retrieve relevant information and construct a final report.
 
-build_queries_prompt =  """
+query_generator_prompt =  """
 You are a <ROLE> Research Query Generator Agent </ROLE> working within a multi-agent information retrieval system.
 
 <CONTEXT>
@@ -71,4 +71,4 @@ Return exactly <NUM_QUERIES>{num_queries}<NUM_QUERIES> search queries.
 - Do not number the queries.
 - Do not include explanations, metadata, or anything other than the plain search queries.
 </OUTPUT_FORMAT>
-"""
+""" 

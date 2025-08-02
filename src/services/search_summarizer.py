@@ -1,16 +1,16 @@
 """
-Search and summarization services for the Deep Research Agent project.
+Search and summarize services for the Deep Research Agent project.
 """
 
 import logging
 from models.base import QueryResult
-from templates.summary_web_search import summary_web_search_prompt
+from templates.prompt_web_search_summarizer import web_search_summarizer_prompt
 from tavily import TavilyClient
 from langchain_openai import ChatOpenAI
 from typing import Dict, Any
 
 
-def search_summarize(data: Dict[str, Any]) -> Dict[str, Any]:
+def search_and_summarize(data: Dict[str, Any]) -> Dict[str, Any]:
     """
     Perform a web search for the given query, extract content, and summarize it using an LLM.
     This function represents a single agent that handles both search and summarization tasks.
@@ -36,7 +36,7 @@ def search_summarize(data: Dict[str, Any]) -> Dict[str, Any]:
     if len(url_extraction["results"]) > 0:
         raw_content = url_extraction["results"][0]["raw_content"]
 
-        prompt = summary_web_search_prompt.format(current_date=current_date, page_content=raw_content)
+        prompt = web_search_summarizer_prompt.format(current_date=current_date, page_content=raw_content)
         llm_result = default_llm_openai.invoke(prompt)
         
         # Create the query result

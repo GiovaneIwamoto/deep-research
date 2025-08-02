@@ -6,7 +6,7 @@
 
 # This prompt guides an Agent to act as a "Knowledge Gap Reflection Agent", analyzing a summary and generating follow-up queries to fill knowledge gaps.
 
-knowledge_gap_reflection_prompt = """
+summary_reflector_prompt = """
 You are a <ROLE>Knowledge Gap Reflection Agent</ROLE> in a multi-agent research system.
 
 <CONTEXT>
@@ -61,4 +61,4 @@ Return only a JSON object using the structure below:
    ]
 }}
 </OUTPUT_FORMAT>
-"""
+""" 

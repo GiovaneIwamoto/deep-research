@@ -17,7 +17,7 @@
 
 # This prompt guides an Agent to act as a "Final Report Composer Agent", generating a comprehensive, markdown-formatted, and user-friendly report that directly addresses a research brief.
 
-build_final_report_prompt = """
+final_report_writer_prompt = """
 You are a <ROLE>Final Report Composer Agent</ROLE> in a multi-agent research system.
 
 <CONTEXT>
@@ -70,4 +70,4 @@ Return only the final report in Markdown format. At the end of the report, inclu
 
 The numbering of citations must be consistent and sequential with those used in the body of the report. Ensure every citation used is traceable to its corresponding source in the list.
 </OUTPUT_FORMAT>
-"""
+""" 
