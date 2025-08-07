@@ -5,12 +5,14 @@ Search and summarize services for the Deep Research Agent project.
 import logging
 from models.base import QueryResult
 from templates.prompt_web_search_summarizer import web_search_summarizer_prompt
+from config.system_config import Configuration
+from langchain_core.runnables import RunnableConfig
 from tavily import TavilyClient
 from langchain_openai import ChatOpenAI
 from typing import Dict, Any
 
 
-def search_and_summarize(data: Dict[str, Any]) -> Dict[str, Any]:
+def search_and_summarize(data: Dict[str, Any], config: RunnableConfig) -> Dict[str, Any]:
     """
     Perform a web search for the given query, extract content, and summarize it using an LLM.
     This function represents a single agent that handles both search and summarization tasks.
@@ -29,15 +31,19 @@ def search_and_summarize(data: Dict[str, Any]) -> Dict[str, Any]:
     url = results["results"][0]["url"]
     url_extraction = tavily_client.extract(url)
 
+    # Use configuration from RunnableConfig
+    configurable = Configuration.from_runnable_config(config)
+    model_name = configurable.summarization_model
+
     # Summarize the content using an LLM
-    default_llm_openai = ChatOpenAI(model="gpt-4.1-mini-2025-04-14")
+    summarization_llm = ChatOpenAI(model=model_name)
 
     # If the content is not empty, summarize it using an LLM
     if len(url_extraction["results"]) > 0:
         raw_content = url_extraction["results"][0]["raw_content"]
 
         prompt = web_search_summarizer_prompt.format(current_date=current_date, page_content=raw_content)
-        llm_result = default_llm_openai.invoke(prompt)
+        llm_result = summarization_llm.invoke(prompt)
         
         # Create the query result
         query_results = QueryResult(
@@ -45,7 +51,7 @@ def search_and_summarize(data: Dict[str, Any]) -> Dict[str, Any]:
             url=url,
             summary=llm_result.content
         )
-        logging.info(f"\nQuery: {query}\n\nSearch result summary:\n{query_results}\n")
+        logging.info(f"QUERY: {query}\n\n[SEARCH RESULT SUMMARY]:\n\n{query_results}\n\n")
 
     else:
         query_results = QueryResult(
@@ -53,5 +59,6 @@ def search_and_summarize(data: Dict[str, Any]) -> Dict[str, Any]:
             url=url,
             summary="No content could be extracted from the provided URL."
         )
-        logging.warning(f"\nNo content extracted for query: {query} (URL: {url})\n")
+        logging.warning(f"[NO CONTENT EXTRACTED FROM QUERY]: {query}\n(URL: {url})\n\n")
+
     return {"queries_results": [query_results]} 

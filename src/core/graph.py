@@ -12,6 +12,7 @@ from services.search_summarizer import search_and_summarize
 from services.summary_reflector import reflect_on_summary
 from langgraph.graph import START, END, StateGraph
 
+
 def build_graph() -> StateGraph[ReportState]:
     """
     Builds and returns the LangGraph workflow used by the Deep Research Agent.

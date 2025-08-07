@@ -5,11 +5,13 @@ Final report writer services for the Deep Research Agent project.
 import logging
 from models.base import ReportState
 from templates.prompt_final_report_writer import final_report_writer_prompt 
+from config.system_config import Configuration
+from langchain_core.runnables import RunnableConfig
 from langchain_openai import ChatOpenAI
 from typing import Dict, Any
 
 
-def write_final_report(state: ReportState) -> Dict[str, Any]:
+def write_final_report(state: ReportState, config: RunnableConfig) -> Dict[str, Any]:
     """
     Aggregate all search results and synthesize a final report using an LLM.
     """
@@ -28,9 +30,14 @@ def write_final_report(state: ReportState) -> Dict[str, Any]:
                                               research_brief=state.user_input, 
                                               aggregated_summaries=search_results)
     
-    logging.info("\n\nCompiled search results for final synthesis:\n\n%s", search_results)
+    logging.info(f"[COMPILED SEARCH RESULTS FOR FINAL SYNTHESIS]:\n\n{search_results}\n\n")
     
-    default_llm_openai = ChatOpenAI(model="gpt-4.1-mini-2025-04-14")
-    final_report = default_llm_openai.invoke(prompt)
+    # Use configuration from RunnableConfig
+    configurable = Configuration.from_runnable_config(config)
+    model_name = configurable.final_report_model
+    
+    # Use the configured model for final report generation
+    final_report_llm = ChatOpenAI(model=model_name)
+    final_report = final_report_llm.invoke(prompt)
     
     return {"final_report": final_report} 
