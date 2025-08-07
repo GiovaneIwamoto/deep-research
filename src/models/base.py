@@ -18,7 +18,7 @@ class QueryResult(BaseModel):
 
 class ReportState(BaseModel):
     """
-    Maintains the state of the research workflow, including user input, queries, results, and reflection settings.
+    Maintains the state of the research workflow, including user input, queries, and results.
     Annotated at queries_results with operator.add to allow for concatenation of lists.
     """
     user_input: str = None
@@ -26,7 +26,4 @@ class ReportState(BaseModel):
     search_queries: List[str] = []
     queries_results: Annotated[List[QueryResult], operator.add]
     research_loop_count: int = 0
-    use_reflection: bool = True
-    reflection_loops: int = 1 
     current_date: str = None
-    num_queries: int = 2
