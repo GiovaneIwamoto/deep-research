@@ -3,6 +3,7 @@
 # Placeholders:
 # - {research_brief}: The research brief.
 # - {aggregated_summaries}: The aggregated summaries retrieved by the search agents.
+# - {num_queries}: The number of follow-up queries to generate.
 
 # This prompt guides an Agent to act as a "Knowledge Gap Reflection Agent", analyzing a summary and generating follow-up queries to fill knowledge gaps.
 
@@ -47,7 +48,7 @@ You are analyzing a synthesized summary based on web search results. Your task i
 </GUIDELINES>
 
 <OUTPUT_FORMAT>
-You must generate **no more than 3 follow_up_queries**, only if they are truly needed to address the knowledge gaps.
+You must generate exactly <NUM_QUERIES>{num_queries}<NUM_QUERIES> follow-up queries.
 Return only a JSON object using the structure below:
 
 {{
