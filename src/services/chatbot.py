@@ -22,11 +22,9 @@ def chatbot_conversation(state: ChatbotState, config: RunnableConfig) -> Command
     # Greeting message
     if len(messages) == 1 and isinstance(messages[0], AIMessage):
         print(f"\nAgent: {messages[0].content}\n")
-
+    
     # User input
     user_input = input("You: ").strip()
-
-    # Add user message to state and messages
     messages.append(HumanMessage(content=user_input))
     
     # Model with structured output
@@ -34,17 +32,16 @@ def chatbot_conversation(state: ChatbotState, config: RunnableConfig) -> Command
     llm_with_structured_output = chatbot_llm.with_structured_output(ChatbotResponse)
 
     # Prompt with conversation history
-    prompt = chatbot_prompt.format(conversation_history_chatbot=get_buffer_string(messages))
+    prompt = chatbot_prompt.format(conversation_history=get_buffer_string(messages))
     response = llm_with_structured_output.invoke(prompt)
 
     # AI response
     print(f"\nAgent: {response.response_message}\n")
-
-    # Append AI response to messages
     messages.append(AIMessage(content=response.response_message))
-    state["messages"] = messages
 
+    # If the user has provided a research topic go to the deep research workflow
     if response.should_start_research:
+        # Update the research topic in the state, if config does not allow clarification we use the research topic from the user input
         return Command(goto="run_deep_research", update={"research_topic": response.research_topic})
-    
+
     return Command(goto="chatbot")

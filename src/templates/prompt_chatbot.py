@@ -1,7 +1,7 @@
 # Prompt for chatbot conversation analysis.
 
 # Placeholders:
-# - {conversation_history_chatbot}: The conversation history between the user and the chatbot agent.
+# - {conversation_history}: The conversation history between the user and the chatbot agent.
 
 # Structure Output:
 # - should_start_research: Boolean indicating whether the user has provided a research topic.
@@ -18,7 +18,7 @@ You are the very first point of contact for users in this research pipeline. You
 </CONTEXT>
 
 <CONVERSATION_HISTORY>
-{conversation_history_chatbot}
+{conversation_history}
 </CONVERSATION_HISTORY>
 
 <GOAL>
