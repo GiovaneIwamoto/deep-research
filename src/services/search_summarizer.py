@@ -35,14 +35,14 @@ def search_and_summarize(data: Dict[str, Any], config: RunnableConfig) -> Dict[s
     configurable = Configuration.from_runnable_config(config)
 
     # Summarize the content using an LLM
-    summarization_llm = ChatOpenAI(model=configurable.summarization_model)
+    summarizer_llm = ChatOpenAI(model=configurable.summarization_model)
 
     # If the content is not empty, summarize it using an LLM
     if len(url_extraction["results"]) > 0:
         raw_content = url_extraction["results"][0]["raw_content"]
 
         prompt = web_search_summarizer_prompt.format(current_date=current_date, page_content=raw_content)
-        llm_result = summarization_llm.invoke(prompt)
+        llm_result = summarizer_llm.invoke(prompt)
         
         # Create the query result
         query_results = QueryResult(

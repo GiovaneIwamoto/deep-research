@@ -7,7 +7,7 @@ Chatbot interaction, Topic clarification, Research brief generation, Research ex
 
 from langgraph.graph import START, END, StateGraph
 
-from models.base import AgentState, ChatbotState
+from models.base import ChatbotState, DeepResearchState
 from router.flow_control import decide_reflection_or_compose
 from services.chatbot import chatbot_conversation
 from services.final_report_writer import write_final_report
@@ -19,16 +19,16 @@ from services.summary_reflector import reflect_on_summary
 from services.user_topic_clarifier import clarify_user_topic
 
 
-def build_deep_research_graph() -> StateGraph[AgentState]:
+def build_deep_research_graph() -> StateGraph[DeepResearchState]:
     """
     Builds the deep research graph for the main research workflow.
     This graph handles the core research process of clarifying the user's topic, generating a research brief, generating queries, searching and summarizing the results, reflecting on the summaries, and writing the final report.
     
     Returns:
-        StateGraph[AgentState]: Compiled deep research workflow graph
+        StateGraph[DeepResearchState]: Compiled deep research workflow graph
     """
     # Initialize the graph
-    deep_research_graph = StateGraph(AgentState)
+    deep_research_graph = StateGraph(DeepResearchState)
     
     # Nodes
     deep_research_graph.add_node("clarify_user_topic", clarify_user_topic)
