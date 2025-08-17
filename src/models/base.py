@@ -1,29 +1,66 @@
 """
-BaseModel classes for the Deep Research Agent project.
-All Pydantic models for state and results are defined here.
+Base model classes for the Deep Research Agent project.
+
+This module defines all Pydantic models used for state management and structured outputs
+throughout the research workflow. These models ensure type safety and data validation.
 """
 
-from pydantic import BaseModel
-from typing import List
-from typing_extensions import Annotated
 import operator
+from pydantic import BaseModel, Field
+from typing import List, Optional, Annotated
+from langgraph.graph import MessagesState
+
+
+# Structured Outputs
+
+class ChatbotResponse(BaseModel):
+    """
+    Structured output for chatbot conversation analysis.
+    
+    This model represents the analysis of user input to determine if a research
+    topic has been provided and the appropriate response to give.
+    """
+    should_start_research: bool = Field(description="Whether the user has provided a research topic and research should begin")
+    research_topic: str = Field(description="The user's research topic that was provided")
+    response_message: str = Field(description="The response message to display to the user")
+
+class UserTopicClarification(BaseModel):
+    """
+    Structured output for user topic clarification process.
+    
+    This model represents the decision made by the topic clarifier agent
+    regarding whether the user's research topic needs further clarification.
+    """
+    need_clarification: bool = Field(description="Whether the user's topic needs further clarification")
+    clarify_question: str = Field(description="Specific question to ask the user for clarification")
+    acknowledgement_message: str = Field(description="Message acknowledging the topic and confirming research will start")
 
 class QueryResult(BaseModel):
     """
-    Represents the result of a single web search query, including title, url, and a summary.
-    """
-    title: str = None
-    url: str = None
-    summary: str = None
+    Structured output for web search results.
 
-class ReportState(BaseModel):
+    This model stores the structured data from web search results including
+    the source information and extracted content summary.
     """
-    Maintains the state of the research workflow, including user input, queries, and results.
-    Annotated at queries_results with operator.add to allow for concatenation of lists.
-    """
-    user_input: str = None
-    final_report: str = None
+    title: Optional[str] = Field(description="Title of the web page or article")
+    url: Optional[str] = Field(description="URL of the source")
+    summary: Optional[str] = Field(description="Extracted and summarized content from the source")
+
+
+# State models
+
+class ChatbotState(MessagesState):
+    """State management for the chatbot workflow."""
+    should_start_research: bool
+    research_topic: str
+
+class DeepResearchState(MessagesState):
+    """State management for the deepresearch workflow."""
+    current_date: Optional[str]
+    research_topic: Optional[str]
+    research_brief: Optional[str]
     search_queries: List[str] = []
     queries_results: Annotated[List[QueryResult], operator.add]
+    final_report: Optional[str]
     research_loop_count: int = 0
-    current_date: str = None
+    
