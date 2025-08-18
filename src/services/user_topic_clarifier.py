@@ -23,7 +23,7 @@ def clarify_user_topic(state: DeepResearchState, config: RunnableConfig) -> Comm
     if not configurable.allow_clarification:
         return Command(goto="generate_research_brief")
 
-    # Configure Model
+    # Configure model
     user_topic_clarifier_llm = ChatOpenAI(model=configurable.user_topic_clarification_model)
     llm_with_structured_output = user_topic_clarifier_llm.with_structured_output(UserTopicClarification)
 
