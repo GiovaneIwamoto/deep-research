@@ -1,44 +1,34 @@
 """
-Main entrypoint for the Deep Research Agent.
-Responsible for collecting user input, building the workflow graph, and executing the workflow.
+Main entrypoint for the Deep Research Agent project.
 """
 
 import dotenv
-from datetime import date
 from config.logging_config import setup_logging
-from interface.user_input import get_user_input
+from interface.user_configuration import get_user_configuration
 from views.configuration_view import print_configuration_summary
 from core.graph import build_graph
 
-
 def main():
-    """
-    Runs the main workflow of the research agent.
-    """
+    # Setup logging
     setup_logging()
+    
+    # Load environment variables
     dotenv.load_dotenv()
     
-    # Collect user input and configuration preferences
-    user_input, user_config = get_user_input()
-
-    # Print configuration summary
+    # Collect and print user configuration preferences
+    user_config = get_user_configuration()
     print_configuration_summary(user_config)
 
-    # Get the current date in YYYY-MM-DD format
-    current_date = date.today().strftime("%Y-%m-%d")
-
-    # Build the workflow graph
+    # Build the workflow graph and invoke it
     graph = build_graph()
     
-    # Create configurable dict with user preferences
-    configurable = user_config
-    
-    response = graph.invoke({
-        "user_input": user_input,
-        "current_date": current_date,
-    }, config={"configurable": configurable})
-    
-    print("\n\nFINAL REPORT\n\n")
+    initial_state = {
+        "messages": [],
+        "should_start_research": False,
+        "research_topic": ""
+    }
+
+    response = graph.invoke(initial_state, config={"configurable": user_config})
     print(response['final_report'].content)
 
 
