@@ -1,18 +1,14 @@
 """
-Module responsible for collecting user input for the Deep Research Agent.
+User configuration preferences for the Deep Research Agent project.
 """
 
-def get_user_input() -> tuple[str, dict]:
-    """
-    Prompts the user for the research topic and configuration preferences.
-    Returns a tuple: (user_input, user_config)
-    """
-    # Ask for the research topic
-    user_input = input("Enter the research topic or question: ").strip()
+def get_user_configuration() -> dict:
+    """Gets configuration preferences for the user."""
+    
+    print("\nDeep Research Agent Configuration\n")
     
     # Ask for reflection preferences
     reflection_choice = input("Enable reflection? (y/n): ").strip().lower()
-    
     user_config = {}
     
     # If the user wants to enable reflection ask for the number of loops
@@ -32,4 +28,4 @@ def get_user_input() -> tuple[str, dict]:
         user_config["allow_reflection"] = False
         user_config["reflection_loops"] = 1
     
-    return user_input, user_config 
+    return user_config
