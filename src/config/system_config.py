@@ -1,27 +1,71 @@
-# Got some inspiration from https://github.com/langchain-ai/open_deep_research/blob/main/src/open_deep_research/configuration.py
-# Only select ideas were adapted — content was rewritten for this use case.
-
 """
-System configuration for the Deep Research system.
+System configuration for the Deep Research Agent.
+
+This module defines the configuration system that manages all settings for the research
+workflow, including model selections, research parameters, and system behavior.
+
+Inspired by: https://github.com/langchain-ai/open_deep_research/blob/main/src/open_deep_research/configuration.py
+Adapted and rewritten for this specific use case.
 """
 
 import os
 from enum import Enum
-from typing import Any, Optional
-
+from typing import Any, Optional, Dict
 from pydantic import BaseModel, Field
 from langchain_core.runnables import RunnableConfig
 
 
 class SearchEngine(Enum):
-    """Enumeration of available search engines."""
+    """Available search engine options for web research."""
     TAVILY = "tavily"
     NONE = "none"
 
 
 class Configuration(BaseModel):
-    """Main configuration class for the Deep Research agent."""
+    """
+    Main configuration class for the Deep Research Agent.
     
+    This class manages all configuration parameters including model selections,
+    research behavior settings, and system preferences. Configuration values
+    are loaded with priority: User Input > Environment Variables > Defaults.
+    """
+
+    # Chatbot Model
+    chatbot_model: str = Field(
+        default="gpt-4.1-mini",
+        metadata={
+            "x_oap_ui_config": {
+                "type": "text",
+                "default": "openai:gpt-4.1-mini",
+                "description": "Model for the chatbot"
+            }
+        }
+    )
+
+    # User Topic Clarification Model
+    user_topic_clarification_model: str = Field(
+        default="gpt-4.1-mini",
+        metadata={
+            "x_oap_ui_config": {
+                "type": "text",
+                "default": "openai:gpt-4.1-mini",
+                "description": "Model for clarifying the user's research topic"
+            }
+        }
+    )
+
+    # Research Brief Generation Model
+    research_brief_generation_model: str = Field(
+        default="gpt-4.1-mini",
+        metadata={
+            "x_oap_ui_config": {
+                "type": "text",
+                "default": "openai:gpt-4.1-mini",
+                "description": "Model for generating a research brief"
+            }
+        }
+    )
+
     # Query Generation Model
     query_generation_model: str = Field(
         default="gpt-4.1-mini",
@@ -115,6 +159,18 @@ class Configuration(BaseModel):
         }
     )
 
+    # Allow Clarification
+    allow_clarification: bool = Field(
+        default=True,
+        metadata={
+            "x_oap_ui_config": {
+                "type": "boolean",
+                "default": True,
+                "description": "Whether to allow the researcher to ask the user clarifying questions before starting research"
+            }
+        }
+    )
+
     # Allow Reflection
     allow_reflection: bool = Field(
         default=True,
@@ -158,41 +214,39 @@ class Configuration(BaseModel):
         }
     )
 
-    # Allow Clarification
-    allow_clarification: bool = Field(
-        default=True,
-        metadata={
-            "x_oap_ui_config": {
-                "type": "boolean",
-                "default": True,
-                "description": "Whether to allow the researcher to ask the user clarifying questions before starting research"
-            }
-        }
-    )
-
 
     @classmethod
     def from_runnable_config(cls, config: Optional[RunnableConfig] = None) -> "Configuration":
-        """Create a Configuration instance from a RunnableConfig."""
+        """
+        Create a Configuration instance from a RunnableConfig.
+        
+        Configuration values are loaded with the following priority:
+        1. User input from configurable
+        2. Environment variables
+        3. Default values
+        
+        Args:
+            config: Optional RunnableConfig containing user preferences
+            
+        Returns:
+            Configuration: Configured instance with resolved values
+        """
         configurable = config.get("configurable", {}) if config else {}
-        
         field_names = list(cls.model_fields.keys())
-        
-        # Priority order: user input > environment variables > defaults
-        values: dict[str, Any] = {}
+        values: Dict[str, Any] = {}
         
         for field_name in field_names:
-            # First priority: user input from configurable
+            # Priority 1: User input from configurable
             if field_name in configurable:
                 values[field_name] = configurable[field_name]
             
-            # Second priority: environment variables
+            # Priority 2: Environment variables
             elif os.environ.get(field_name.upper()):
                 values[field_name] = os.environ.get(field_name.upper())
-
-            # Third priority: defaults handled by Pydantic
+            
+            # Priority 3: Defaults handled by Pydantic
         return cls(**{k: v for k, v in values.items() if v is not None})
 
     class Config:
-        """Pydantic configuration."""
+        """Pydantic configuration settings."""
         arbitrary_types_allowed = True
