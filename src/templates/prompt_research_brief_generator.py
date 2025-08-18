@@ -26,11 +26,12 @@ Downstream agents will explore surrounding topics and expand the scope, your tas
 
 <GOAL>
 - Extract all research requirements, preferences, and constraints from the conversation.
-- Create a comprehensive brief written in the **first person** as if the user is making the request.
+- Create a concise brief written in the **first person**, as if I (the user) am making the request.
+- The brief should capture only the essential details necessary to understand the research intent, avoiding unnecessary elaboration or excessive structure.
 - Synthesize both user input and clarification exchanges into one coherent brief.
-- Ensure the brief provides sufficient detail for effective research that is coherent with the user's intent.
 - Maintain all nuances and specific aspects mentioned by the user throughout the conversation.
 - Explicitly mark as "unspecified" or "open-ended" any missing details instead of inventing them.
+- Do not include any meta-commentary about the brief itself. Focus solely on the research requirements and objectives.
 </GOAL>
 
 <GUIDELINES>
@@ -50,39 +51,21 @@ Downstream agents will explore surrounding topics and expand the scope, your tas
    - Include comparative elements or perspectives only if requested.
 
 4. Detail Level
-   - Provide sufficient detail to guide downstream research.
-   - Include specific questions or aspects that should be investigated.
-   - Mention any expected outcomes or goals implied by the user's requests.
-   - For missing but relevant dimensions (timeframe, geography, use case) note them as "unspecified" or "open-ended".
+   - Focus only on what is explicitly present or implied in the conversation.
+   - Keep the brief short, clear, and practical.
+   - If important details are missing, simply mark them as "unspecified" or "open-ended".
 </GUIDELINES>
 
 <BRIEF_STRUCTURE>
-Your research brief should cover the following elements when relevant: 
-Main Topic, Specific Areas of Interest, Context, Objectives, Key Questions, Constraints, Outcomes, Open-Ended Dimensions. 
-Include those that are present or implied in the conversation, and omit the rest.
-
-1. **Main Research Topic**: Clear statement of the primary subject.
-2. **Specific Areas of Interest**: Key aspects or subtopics to investigate.
-3. **Context and Background**: Relevant context, timeframe, or geographical scope.
-4. **Research Objectives**: What the research should accomplish or discover.
-5. **Key Questions**: Specific questions that should be answered.
-6. **Constraints or Preferences**: Any limitations or requirements mentioned.
-7. **Expected Outcomes**: What the user hopes to learn or understand.
-8. **Open-Ended Dimensions**: Explicitly list aspects marked as unspecified or flexible.
+- Your brief should be a short, well-formatted paragraph (or a few bullet points if clearer), written in the first person as if the user is directly describing what they want researched.
+- Include only the key topic, important details, and note any unspecified/open-ended parts.
 </BRIEF_STRUCTURE>
 
 <OUTPUT_FORMAT>
-Return a single comprehensive research brief in plain text format, written in the **first person voice of the user**. The brief should be:
-
-- Based only on the conversation history (including clarifications if present)
-- Expressed as if I, the user, am stating what I want researched
-- Detailed enough to guide downstream research agents
-- Well-structured and easy to understand
-- Comprehensive without inventing new information
-- Explicit in marking any unspecified/open-ended dimensions
-- Professional in tone and presentation
-
-Do not include any meta-commentary about the brief itself. Focus solely on the research requirements and objectives.
+- Return a short research brief in plain text format, written in the **first person**.
+- It should read like I, the user, am making a direct request.
+- Keep it clear, minimal, and focused only on what was said in the conversation.
+- Do not add or invent information. If details are missing, mark them as "unspecified" or "open-ended".
 </OUTPUT_FORMAT>
 
 <BEHAVIORAL_CONSTRAINTS>
