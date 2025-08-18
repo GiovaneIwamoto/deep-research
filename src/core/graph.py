@@ -40,10 +40,8 @@ def build_deep_research_graph() -> StateGraph[DeepResearchState]:
     
     # Edges
     deep_research_graph.add_edge(START, "clarify_user_topic")
-    deep_research_graph.add_edge("clarify_user_topic", "generate_research_brief")
     deep_research_graph.add_edge("generate_research_brief", "generate_queries")
     deep_research_graph.add_edge("write_final_report", END)
-
 
     # Conditional Edge - Generate Queries
     deep_research_graph.add_conditional_edges("generate_queries", spawn_researchers, ["search_and_summarize"])

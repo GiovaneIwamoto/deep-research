@@ -56,7 +56,6 @@ class ChatbotState(MessagesState):
 
 class DeepResearchState(MessagesState):
     """State management for the deepresearch workflow."""
-    current_date: Optional[str]
     research_topic: Optional[str]
     research_brief: Optional[str]
     search_queries: List[str] = []
