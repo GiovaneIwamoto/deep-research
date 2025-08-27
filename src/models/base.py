@@ -53,6 +53,7 @@ class ChatbotState(MessagesState):
     """State management for the chatbot workflow."""
     should_start_research: bool
     research_topic: str
+    final_report: str
 
 class DeepResearchState(MessagesState):
     """State management for the deepresearch workflow."""

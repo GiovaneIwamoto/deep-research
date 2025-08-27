@@ -22,15 +22,10 @@ def main():
     # Build the workflow graph and invoke it
     graph = build_graph()
     
-    initial_state = {
-        "messages": [],
-        "should_start_research": False,
-        "research_topic": ""
-    }
+    initial_state = {"messages": []}
 
     response = graph.invoke(initial_state, config={"configurable": user_config})
-    print(response['final_report'].content)
-
+    print(response['final_report'])
 
 if __name__ == "__main__":
     main() 
