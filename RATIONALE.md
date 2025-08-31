@@ -6,6 +6,9 @@
 
 The `write_final_report` function previously maintained a `reference` variable that concatenated all search result references in sequential order. This approach was fundamentally flawed and contradicted the service's core responsibility.
 
+> **TL;DR**: *References should not be generated at the report-writer level; they must reflect only the sources actually cited in the final content, not all outputs from work agents.*
+
+
 ### Design Issues
 
 #### 1. **Misaligned Responsibility**
