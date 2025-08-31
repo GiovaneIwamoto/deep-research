@@ -1,5 +1,9 @@
 """
 Final report writer services for the Deep Research Agent project.
+
+Rationale:
+For detailed technical rationale and design thinking considerations, please refer to the RATIONALE.md file Topic 01.
+TL;DR: It does not make sense to define a reference variable at the report writer service level because references are handled at Agent level. In other words, the agent doesn't use those references in the same concatenated order as the output variables from all the other agents.
 """
 
 import logging
@@ -18,7 +22,6 @@ def write_final_report(state: DeepResearchState, config: RunnableConfig) -> Dict
     Aggregate all search results and synthesize a final report using an LLM.
     """
     search_results = ""
-    reference = ""
     
     # Aggregate all search results and synthesize a final report.
     for i, result in enumerate(state.get("queries_results", [])):
@@ -26,7 +29,6 @@ def write_final_report(state: DeepResearchState, config: RunnableConfig) -> Dict
         search_results += f"Title: {result.title}\n"
         search_results += f"URL: {result.url}\n"
         search_results += f"Content: {result.summary}\n\n"
-        reference += f"[{i+1}] - {result.title} ({result.url})\n"
     
     prompt = final_report_writer_prompt.format(current_date=get_current_date(), 
                                               research_brief=state["research_brief"], 
