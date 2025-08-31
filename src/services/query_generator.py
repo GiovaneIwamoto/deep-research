@@ -2,7 +2,6 @@
 Query generator services for the Deep Research Agent project.
 """
 
-import logging
 from typing import List, Dict, Any
 from langchain_openai import ChatOpenAI
 from langchain_core.runnables import RunnableConfig
@@ -11,6 +10,8 @@ from config.system_config import Configuration
 from models.base import DeepResearchState, QueryResult
 from utils.current_date import get_current_date
 from templates.prompt_query_generator import query_generator_prompt
+from utils.logger_formatter import logging_query_generator
+
 
 def generate_queries(state: DeepResearchState, config: RunnableConfig) -> Dict[str, Any]:
     """Generate a list of search queries based on the research brief using an LLM."""
@@ -32,6 +33,6 @@ def generate_queries(state: DeepResearchState, config: RunnableConfig) -> Dict[s
     query_generator_llm = ChatOpenAI(model=configurable.query_generation_model).with_structured_output(QueryList)
     response = query_generator_llm.invoke(prompt)
 
-    logging.info(f"Generated search queries:\n\n{response.queries}\n\n")
+    logging_query_generator(response.queries)
     
     return {"search_queries": response.queries} 

@@ -11,6 +11,7 @@ from langgraph.types import Command
 from config.system_config import Configuration
 from models.base import DeepResearchState, UserTopicClarification
 from templates.prompt_user_topic_clarifier import user_topic_clarifier_prompt
+from utils.logger_formatter import logging_clarification_needed
 
 
 def clarify_user_topic(state: DeepResearchState, config: RunnableConfig) -> Command[Literal["generate_research_brief", "clarify_user_topic"]]:
@@ -34,7 +35,8 @@ def clarify_user_topic(state: DeepResearchState, config: RunnableConfig) -> Comm
     # If the user needs clarification ask for it
     if response.need_clarification:
         messages.append(AIMessage(content=response.clarify_question))
-        print(f"\nClarification needed: {response.clarify_question}\n")
+
+        logging_clarification_needed(response.clarify_question)
 
         user_input = input("\nYou: ").strip()
         messages.append(HumanMessage(content=user_input))

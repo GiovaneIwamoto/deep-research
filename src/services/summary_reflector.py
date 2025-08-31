@@ -2,7 +2,6 @@
 Summary reflector services for the Deep Research Agent project.
 """
 
-import logging
 import json
 from typing import Dict, Any
 
@@ -13,6 +12,8 @@ from langchain_core.runnables import RunnableConfig
 from config.system_config import Configuration
 from models.base import DeepResearchState
 from templates.prompt_summary_reflector import summary_reflector_prompt
+from utils.logger_formatter import logging_reflection_analysis
+
 
 def reflect_on_summary(state: DeepResearchState, config: RunnableConfig) -> Dict[str, Any]:
     """Use an reasoning model to reflect on the current summary, identify knowledge gaps, and generate follow-up queries."""
@@ -40,11 +41,12 @@ def reflect_on_summary(state: DeepResearchState, config: RunnableConfig) -> Dict
 
     # Parse result
     try:
+        # Get reflection content
         reflection_content = json.loads(response.content)
         
-        logging.info(f"[Reflection Analysis]:\n\n[Knowledge Gaps]:\n\n{reflection_content.get('knowledge_gaps', [])}\n\n")
-        logging.info(f"[Follow-Up Queries]:\n{reflection_content.get('follow_up_queries', [])}\n\n")
+        logging_reflection_analysis(reflection_content)
         
+        # Get follow-up queries
         queries = reflection_content.get('follow_up_queries', [])
         
         # If no follow-up queries are generated use fallback query

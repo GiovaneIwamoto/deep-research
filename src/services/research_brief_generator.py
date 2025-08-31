@@ -9,6 +9,7 @@ from langchain_core.runnables import RunnableConfig
 from models.base import DeepResearchState
 from config.system_config import Configuration
 from templates.prompt_research_brief_generator import research_brief_generator_prompt
+from utils.logger_formatter import logging_generated_research_brief
 
 
 def generate_research_brief(state: DeepResearchState, config: RunnableConfig) -> dict:
@@ -21,6 +22,7 @@ def generate_research_brief(state: DeepResearchState, config: RunnableConfig) ->
     
     # Invoke model
     response = research_brief_generator_llm.invoke(prompt)
-    print(f"\n\nResponse Research Brief Generator: {response.content}\n\n")
+
+    logging_generated_research_brief(response.content)
 
     return {"research_brief": response.content}

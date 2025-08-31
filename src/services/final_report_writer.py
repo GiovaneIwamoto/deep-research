@@ -2,15 +2,14 @@
 Final report writer services for the Deep Research Agent project.
 
 Rationale:
-For detailed technical rationale and design thinking considerations, please refer to the RATIONALE.md file Topic 01.
-TL;DR: It does not make sense to define a reference variable at the report writer service level because references are handled at Agent level. In other words, the agent doesn't use those references in the same concatenated order as the output variables from all the other agents.
+For detailed technical rationale and design thinking considerations please refer to the RATIONALE.md file Topic 01.
 """
 
-import logging
 from models.base import DeepResearchState
 from templates.prompt_final_report_writer import final_report_writer_prompt 
 from config.system_config import Configuration
 from utils.current_date import get_current_date
+from utils.logger_formatter import logging_final_report_writer
 
 from langchain_core.runnables import RunnableConfig
 from langchain_openai import ChatOpenAI
@@ -34,8 +33,8 @@ def write_final_report(state: DeepResearchState, config: RunnableConfig) -> Dict
                                               research_brief=state["research_brief"], 
                                               aggregated_summaries=search_results)
     
-    logging.info(f"[COMPILED SEARCH RESULTS FOR FINAL SYNTHESIS]:\n\n{search_results}\n\n")
-    
+    logging_final_report_writer(search_results)
+
     # Use configuration from RunnableConfig
     configurable = Configuration.from_runnable_config(config)
     

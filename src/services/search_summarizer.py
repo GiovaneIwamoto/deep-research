@@ -2,7 +2,6 @@
 Search and summarize services for the Deep Research Agent project.
 """
 
-import logging
 from typing import Dict, Any
 from tavily import TavilyClient
 from langchain_openai import ChatOpenAI
@@ -12,6 +11,8 @@ from models.base import QueryResult
 from utils.current_date import get_current_date
 from config.system_config import Configuration
 from templates.prompt_web_search_summarizer import web_search_summarizer_prompt
+from utils.logger_formatter import logging_search_result_summary, logging_no_content_extracted
+
 
 def search_and_summarize(data: Dict[str, Any], config: RunnableConfig) -> Dict[str, Any]:
     """Perform a web search for the given query, extract content, and summarize it using an LLM."""
@@ -45,7 +46,7 @@ def search_and_summarize(data: Dict[str, Any], config: RunnableConfig) -> Dict[s
             url=url_link,
             summary=response.content
         )
-        logging.info(f"Query: {query}\n\n[Search Result Summary]:\n\n{query_results}\n\n")
+        logging_search_result_summary(query, query_results)
 
     else:
         query_results = QueryResult(
@@ -53,6 +54,6 @@ def search_and_summarize(data: Dict[str, Any], config: RunnableConfig) -> Dict[s
             url=url_link,
             summary="No content could be extracted from the provided URL."
         )
-        logging.warning(f"[No content extracted from query]: {query}\n(URL: {url_link})\n\n")
+        logging_no_content_extracted(query, url_link)
 
     return {"queries_results": [query_results]}
