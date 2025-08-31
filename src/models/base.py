@@ -62,5 +62,5 @@ class DeepResearchState(MessagesState):
     search_queries: List[str] = []
     queries_results: Annotated[List[QueryResult], operator.add]
     final_report: Optional[str]
-    research_loop_count: int = 0
+    research_loop_count: Optional[int]
     

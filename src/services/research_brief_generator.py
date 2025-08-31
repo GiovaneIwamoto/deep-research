@@ -18,7 +18,6 @@ def generate_research_brief(state: DeepResearchState, config: RunnableConfig) ->
     # Configure model
     research_brief_generator_llm = ChatOpenAI(model=configurable.research_brief_generation_model)
     prompt = research_brief_generator_prompt.format(conversation_history=get_buffer_string(state['messages']))
-    print(f"\n\nPrompt Research Brief Generator: {prompt}\n\n")
     
     # Invoke model
     response = research_brief_generator_llm.invoke(prompt)

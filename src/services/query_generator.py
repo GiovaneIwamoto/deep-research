@@ -28,8 +28,6 @@ def generate_queries(state: DeepResearchState, config: RunnableConfig) -> Dict[s
         current_date=get_current_date(),
         num_queries=num_queries)
 
-    print("\nPrompt for the query generator:\n", prompt)
-
     # Invoke model
     query_generator_llm = ChatOpenAI(model=configurable.query_generation_model).with_structured_output(QueryList)
     response = query_generator_llm.invoke(prompt)
